@@ -127,7 +127,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>social.logos.epubmaker.Main</mainClass>
+					<mainClass>social.logos.epubmaker.util.GutenbergProject</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

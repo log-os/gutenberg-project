@@ -172,7 +172,7 @@ public class GutenbergProject {
 
 	public static void main(String[] args) {
 
-		for (int i = 100; i <= 150; i++) {
+		for (int i = 150; i <= 1000; i++) {
 			try {
 
 				EpubModifier.isStart = false;
