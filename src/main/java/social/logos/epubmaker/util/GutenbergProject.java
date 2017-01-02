@@ -1,5 +1,5 @@
 /**
- * 
+ * @author naresh
  */
 package social.logos.epubmaker.util;
 
@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
@@ -28,6 +30,8 @@ import onix.social.logos.GutenbergProduct;
  */
 public class GutenbergProject {
 
+	public static List<Integer> idList = new ArrayList<Integer>();
+
 	/**
 	 * @param args
 	 */
@@ -40,8 +44,8 @@ public class GutenbergProject {
 
 		String srcUser = "anonymous";
 		String srcPass = "";
-		String destUser = "";
-		String destPass = "";
+		String destUser = "gutenberg";
+		String destPass = "#tNF*v#2XIoU87Kg1G";
 
 		FTPClient srcftpClient = new FTPClient();
 		FTPClient destftpClient = new FTPClient();
@@ -52,6 +56,9 @@ public class GutenbergProject {
 		String tmpFile = tmpPath + fileName;
 
 		File tmpFileObject = new File(tmpFile);
+		File tmpEpubObject = null;
+		File tmpCoverObject = null;
+		File tmpOnixObject = null;
 		// String downloadPath =
 		// GlobalConfig.getDownloadroot()+"/"+localpath+"/"+filename;
 
@@ -80,54 +87,69 @@ public class GutenbergProject {
 			if (success) {
 
 				// Modify Epub // Create cover //Generate ISBN
-				String isbn  = ISBN.getID(id);
-				GutenbergProduct gutenbergProduct = EpubModifier.updateEpub(tmpPath, fileName,isbn);
-				if(gutenbergProduct!=null){
-				
-				String onixFile = isbn + ".xml";
-				String tmpOnixFile = tmpPath + onixFile;
-				OnixGenerator onixGenerator = new OnixGenerator();
-				onixGenerator.generateOnix(id,isbn, gutenbergProduct.getTitle(), gutenbergProduct.getSubTitle(),gutenbergProduct.getAuthor(), gutenbergProduct.getDescription(), gutenbergProduct.getSubjects(),tmpOnixFile);
-				String epubFile = isbn + ".epub";
-				String coverFile = isbn + ".jpg";
-				String tmpEpubFile = tmpPath + epubFile;
-				String tmpCoverFile = tmpPath + coverFile;
-				
-				String destPath = "/gutenberg/" + isbn + "/";
-				String destEpubFile = destPath + "/" + epubFile;
-				String destCoverFile = destPath + "/" + coverFile;
-				String destOnixFile = destPath + "/" + onixFile;
+				String isbn = ISBN.getID(id);
+				GutenbergProduct gutenbergProduct = EpubModifier.updateEpub(tmpPath, fileName, isbn);
 
-				File tmpEpubObject = new File(tmpEpubFile);
-				File tmpCoverObject = new File(tmpCoverFile);
-				File tmpOnixObject = new File(tmpOnixFile);
+				if (gutenbergProduct != null) {
 
-				/*destftpClient.connect(toServer, port);
-				destftpClient.login(destUser, destPass);
-				// ftpClient.enterLocalActiveMode();
-				destftpClient.enterLocalPassiveMode();
-				destftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-				destftpClient.makeDirectory(destPath);
-				destftpClient.changeWorkingDirectory(destPath);
-				// this overwrites the existing file
-				InputStream input = new FileInputStream(tmpEpubFile);
-				destftpClient.storeFile(epubFile, input);
-				input.close();
-				input = new FileInputStream(tmpCoverFile);
-				destftpClient.storeFile(coverFile, input);
-				input.close();
-				input = new FileInputStream(tmpOnixFile);
-				destftpClient.storeFile(onixFile, input);
-				input.close();*/
-				System.out.println("Temp File: " + tmpEpubFile + "Destination Epub :" + destEpubFile);
+					String onixFile = isbn + ".xml";
+					String tmpOnixFile = tmpPath + onixFile;
+					OnixGenerator onixGenerator = new OnixGenerator();
+					onixGenerator.generateOnix(id, isbn, gutenbergProduct.getTitle(), gutenbergProduct.getSubTitle(),
+							gutenbergProduct.getAuthor(), gutenbergProduct.getDescription(),
+							gutenbergProduct.getSubjects(), tmpOnixFile);
+					String epubFile = isbn + ".epub";
+					String coverFile = isbn + ".jpg";
+					String tmpEpubFile = tmpPath + epubFile;
+					String tmpCoverFile = tmpPath + coverFile;
+
+					String destPath = "/gutenberg/" + isbn + "/";
+					String destEpubFile = destPath + "/" + epubFile;
+					String destCoverFile = destPath + "/" + coverFile;
+					String destOnixFile = destPath + "/" + onixFile;
+
+					tmpEpubObject = new File(tmpEpubFile);
+					tmpCoverObject = new File(tmpCoverFile);
+					tmpOnixObject = new File(tmpOnixFile);
+
+					
+					  destftpClient.connect(toServer, port);
+					  destftpClient.login(destUser, destPass); //
+					  destftpClient.enterLocalPassiveMode();
+					  destftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					  destftpClient.makeDirectory(destPath);
+					  destftpClient.changeWorkingDirectory(destPath); // this
+					  //overwrites the existing file 
+					  InputStream input = new
+					  FileInputStream(tmpEpubFile);
+					  destftpClient.storeFile(epubFile, input); input.close();
+					  input = new FileInputStream(tmpCoverFile);
+					  destftpClient.storeFile(coverFile, input); input.close();
+					  input = new FileInputStream(tmpOnixFile);
+					  destftpClient.storeFile(onixFile, input); input.close();
+					 
+					System.out.println("Temp File: " + tmpEpubFile + "Destination Epub :" + destEpubFile);
+				} else {
+					idList.add(id);
 				}
 			}
 		} catch (Exception ex) {
 			System.out.println("Error: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
+			if (tmpFileObject != null && tmpFileObject.exists()) {
+				tmpFileObject.delete();
+			}
+			if (tmpEpubObject != null && tmpEpubObject.exists()) {
+				tmpEpubObject.delete();
+			}
+			if (tmpCoverObject != null && tmpCoverObject.exists()) {
+				tmpCoverObject.delete();
+			}
+			if (tmpOnixObject != null && tmpOnixObject.exists()) {
+				tmpOnixObject.delete();
+			}
 
-			//tmpFileObject.delete();
 			try {
 				if (srcftpClient.isConnected()) {
 					srcftpClient.logout();
@@ -149,14 +171,28 @@ public class GutenbergProject {
 	}
 
 	public static void main(String[] args) {
-		for (int i = 10; i <= 12; i++) {
-			try{
+
+		for (int i = 100; i <= 150; i++) {
+			try {
+
+				EpubModifier.isStart = false;
+				EpubModifier.isEnd = false;
+
 				copyEpubFile(i);
-			}catch(Exception ex){
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			
+
 		}
+
+		System.out.print("FAILURE----[");
+		for (Integer id : idList) {
+			System.out.print(id + ",");
+		}
+		System.out.print("]");
+
+		idList.clear();
+
 	}
 
 }
