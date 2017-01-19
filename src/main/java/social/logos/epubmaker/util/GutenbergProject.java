@@ -184,8 +184,14 @@ public class GutenbergProject {
 		System.setProperty("sun.jnu.encoding","UTF-8");
 		System.setProperty("sun.io.unicode.encoding","UnicodeBig");
 		System.setProperty("file.encoding.pkg","sun.io");
+		
+		System.out.println("file.encoding=" + System.getProperty("file.encoding") );
+		System.out.println("sun.jnu.encoding=" + System.getProperty("sun.jnu.encoding") );
+		System.out.println("sun.io.unicode.encoding=" + System.getProperty("sun.io.unicode.encoding") );
+		System.out.println("file.encoding.pkg=" + System.getProperty("file.encoding.pkg") );
+		
 
-		for (int i = 23950; i <= 23950; i++) {
+		for (int i = 23951; i <= 23951; i++) {
 			try {
 
 				EpubModifier.isStart = false;
