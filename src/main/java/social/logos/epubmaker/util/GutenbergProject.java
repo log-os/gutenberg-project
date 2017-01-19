@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,7 +150,7 @@ public class GutenbergProject {
 			if (tmpOnixObject != null && tmpOnixObject.exists()) {
 				tmpOnixObject.delete();
 			}
-
+			System.out.println("Encoding :"+System.getProperty("file.encoding"));
 			try {
 				if (srcftpClient.isConnected()) {
 					srcftpClient.logout();
@@ -171,8 +172,10 @@ public class GutenbergProject {
 	}
 
 	public static void main(String[] args) {
-
-		for (int i = 150; i <= 1000; i++) {
+		System.setProperty("file.encoding", "UTF-8");
+        System.out.println("Encoding :"+System.getProperty("file.encoding"));
+		System.out.println("Charset :"+Charset.defaultCharset());	
+		for (int i = 23950; i <= 23950; i++) {
 			try {
 
 				EpubModifier.isStart = false;

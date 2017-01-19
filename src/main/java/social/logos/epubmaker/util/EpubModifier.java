@@ -133,6 +133,7 @@ public class EpubModifier {
 		author = author.toUpperCase();
 		BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics2d = image.createGraphics();
+		Font defaultFont = graphics2d.getFont();
 		Font titleFont = ProximaFont.deriveFont(35f);
 		Font authorFont = ProximaFont.deriveFont(25f);
 		System.out.println("Font Name :" + authorFont.getFontName());
@@ -161,8 +162,16 @@ public class EpubModifier {
 			graphics2d.setColor(titleColor);
 		}
 		graphics2d.setFont(titleFont);
+		int canDisplay = graphics2d.getFont().canDisplayUpTo(title);
+		
+		System.out.println("Can Display:"+canDisplay);
+		if(canDisplay!=-1){
+			System.out.println("TitleFont:"+defaultFont.getFamily());
+			graphics2d.setFont(new Font(defaultFont.getFamily(),defaultFont.getStyle(),35));
+		}
 		fontmetrics = graphics2d.getFontMetrics();
 		if (stringWidth < width - 50) {
+			System.out.print("Title :"+title);
 			graphics2d.drawString(title, (width / 2) - (stringWidth / 2), 150);
 		} else {
 			String[] titletext = title.split(" ");
