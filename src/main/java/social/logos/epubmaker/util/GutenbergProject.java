@@ -175,6 +175,16 @@ public class GutenbergProject {
 		System.setProperty("file.encoding", "UTF-8");
         System.out.println("Encoding :"+System.getProperty("file.encoding"));
 		System.out.println("Charset :"+Charset.defaultCharset());	
+		System.out.println("file.encoding=" + System.getProperty("file.encoding") );
+		System.out.println("sun.jnu.encoding=" + System.getProperty("sun.jnu.encoding") );
+		System.out.println("sun.io.unicode.encoding=" + System.getProperty("sun.io.unicode.encoding") );
+		System.out.println("file.encoding.pkg=" + System.getProperty("file.encoding.pkg") );
+		
+		System.setProperty("file.encoding","UTF-8");
+		System.setProperty("sun.jnu.encoding","UTF-8");
+		System.setProperty("sun.io.unicode.encoding","UnicodeBig");
+		System.setProperty("file.encoding.pkg","sun.io");
+
 		for (int i = 23950; i <= 23950; i++) {
 			try {
 
