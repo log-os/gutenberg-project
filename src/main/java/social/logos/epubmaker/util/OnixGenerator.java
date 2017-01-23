@@ -71,7 +71,7 @@ public class OnixGenerator {
 		EmailAddress emailAddress = new EmailAddress();
 		emailAddress.setValue("onix@logos.social");
 		SentDateTime sentDateTime = new SentDateTime();
-		sentDateTime.setValue("20161221T1127");
+		sentDateTime.setValue("20170101T1127");
 		sender.getContent().add(senderName);
 		sender.getContent().add(emailAddress);
 		header.setSender(sender);
