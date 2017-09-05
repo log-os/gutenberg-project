@@ -41,12 +41,12 @@ public class GutenbergProject {
 		String fileName = "pg" + id + "-images.epub";
 		int port = 21;
 		String fromServer = "gutenberg.pglaf.org";
-		String toServer = "ftp.logos.social";
+		String toServer = "";//add to ftp host name
 
 		String srcUser = "anonymous";
 		String srcPass = "";
 		String destUser = "gutenberg";
-		String destPass = "#tNF*v#2XIoU87Kg1G";
+		String destPass = "";//ftp password here
 
 		FTPClient srcftpClient = new FTPClient();
 		FTPClient destftpClient = new FTPClient();
