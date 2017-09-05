@@ -90,7 +90,6 @@ public class GutenbergProject {
 				// Modify Epub // Create cover //Generate ISBN
 				String isbn = ISBN.getID(id);
 				GutenbergProduct gutenbergProduct = EpubModifier.updateEpub(tmpPath, fileName, isbn);
-
 				if (gutenbergProduct != null) {
 
 					String onixFile = isbn + ".xml";
@@ -98,7 +97,7 @@ public class GutenbergProject {
 					OnixGenerator onixGenerator = new OnixGenerator();
 					onixGenerator.generateOnix(id, isbn, gutenbergProduct.getTitle(), gutenbergProduct.getSubTitle(),
 							gutenbergProduct.getAuthor(), gutenbergProduct.getDescription(),
-							gutenbergProduct.getSubjects(), tmpOnixFile);
+							gutenbergProduct.getSubjects(), tmpOnixFile,gutenbergProduct.getLanguage());
 					String epubFile = isbn + ".epub";
 					String coverFile = isbn + ".jpg";
 					String tmpEpubFile = tmpPath + epubFile;
@@ -191,7 +190,7 @@ public class GutenbergProject {
 		System.out.println("file.encoding.pkg=" + System.getProperty("file.encoding.pkg") );
 		
 
-		for (int i = 23951; i <= 23951; i++) {
+		for (int i = 28696; i <= 28696; i++) {
 			try {
 
 				EpubModifier.isStart = false;

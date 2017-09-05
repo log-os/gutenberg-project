@@ -429,7 +429,7 @@ public class EpubModifier {
 
 				return null;
 			}
-
+			
 			Resource cover = book.getCoverImage();
 			if (cover != null) {
 				InputStream is = cover.getInputStream();
@@ -438,6 +438,10 @@ public class EpubModifier {
 				title2Cover(gutenbergProduct.getTitle(), gutenbergProduct.getAuthor(), oldPath + "/" + isbn + ".jpg");
 			}
 
+			String language = book.getMetadata().getLanguage();
+			if(language!=null && !language.equals("")){
+				gutenbergProduct.setLanguage(book.getMetadata().getLanguage());
+			}
 			return gutenbergProduct;
 
 		} catch (Exception ex) {

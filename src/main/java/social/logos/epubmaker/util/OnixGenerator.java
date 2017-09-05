@@ -48,11 +48,11 @@ public class OnixGenerator {
 		jaxbObjectToXML(om);
 	}*/
 	
-	public String generateOnix(int gutenbergId,String isbn,String title,String subTitle,String author,String description,List<String> subjects,String onixPath){
+	public String generateOnix(int gutenbergId,String isbn,String title,String subTitle,String author,String description,List<String> subjects,String onixPath,String language){
 		ONIXMessage om = new ONIXMessage();
 		om.setRelease("3.0");
 		List<Product> products = new ArrayList<Product>();
-		Product product = this.buildProduct(isbn,title,subTitle,author,description,subjects);
+		Product product = this.buildProduct(isbn,title,subTitle,author,description,subjects,language);
 		products.add(product);
 		Header header = buildHeader(BigInteger.valueOf(gutenbergId));
 		om.setHeader(header);
@@ -83,7 +83,7 @@ public class OnixGenerator {
 
 	}
 
-	public Product buildProduct(String isbn, String title, String subTitle,String author, String description,List<String> subjects) {
+	public Product buildProduct(String isbn, String title, String subTitle,String author, String description,List<String> subjects, String language) {
 		Product product = new Product();
 		
 		RecordReference recordRef = new RecordReference();
@@ -94,7 +94,7 @@ public class OnixGenerator {
 		product.setNotificationType(nt);
 		ProductIdentifier pid = this.buildProductIdentifier(isbn);
 		product.getProductIdentifier().add(pid);
-		DescriptiveDetail descriptiveDetail=this.buildDescriptiveDetail(title,subTitle,author,subjects);
+		DescriptiveDetail descriptiveDetail=this.buildDescriptiveDetail(title,subTitle,author,subjects,language);
 		product.setDescriptiveDetail(descriptiveDetail);
 		
 		// CollateralDetail
@@ -106,7 +106,8 @@ public class OnixGenerator {
 		// ProductSupply
 		ProductSupply productSupply = buildProductSupply();
 		product.getProductSupply().add(productSupply);
-	
+		
+		
 		return product;
 
 	}
@@ -123,7 +124,7 @@ public class OnixGenerator {
 
 	}
 
-	public DescriptiveDetail buildDescriptiveDetail(String title, String subTitle,String author,List<String> subjects) {
+	public DescriptiveDetail buildDescriptiveDetail(String title, String subTitle,String author,List<String> subjects,String language) {
 		DescriptiveDetail descriptiveDetail = new DescriptiveDetail();
 		TitleDetail titleDetail = new TitleDetail();
 		TitleType titleType = new TitleType();
@@ -152,7 +153,9 @@ public class OnixGenerator {
 		//Contributor
 		Contributor contributor = getContributor(author);
 		descriptiveDetail.getContributor().add(contributor);
-				
+		Language lang = new Language();
+		language.setLanguageCode(LanguageCodes.valueOf(""));
+		descriptiveDetail.getLanguage().add(Lang)
 
 		// Subjects
 		for(String keyword:subjects){
@@ -275,8 +278,8 @@ public class OnixGenerator {
 		date.setValue("20161213");
 		supplyDetail.getSupplyDate().add(supplyDate);
 		
-		Price priceIN = getPrice(List96.EUR,List91.IN,0);
-		Price priceUS = getPrice(List96.EUR,List91.US,0);
+		Price priceIN = getPrice(List96.INR,List91.IN,0);
+		Price priceUS = getPrice(List96.USD,List91.US,0);
 		Price priceDE = getPrice(List96.EUR,List91.DE,0);
 		supplyDetail.getPrice().add(priceIN);
 		supplyDetail.getPrice().add(priceUS);

@@ -18,6 +18,7 @@ public class GutenbergProduct {
 	public List<String> subjects=new ArrayList<String>();
 	public String description="";
 	public String author="";
+	public String language;
 
 	/**
 	 * @return the title
@@ -106,6 +107,20 @@ public class GutenbergProduct {
 	 */
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+
+	/**
+	 * @return the language
+	 */
+	public String getLanguage() {
+		return language;
+	}
+
+	/**
+	 * @param language the language to set
+	 */
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 }
